@@ -146,7 +146,7 @@ def main():
                 ) # need to initialize EMA this way at the beginning
     
     if args.restore_weights_only:
-        model.load_state_dict(torch.load(args.ckpt, map_location='cpu')['state_dict'], strict=False)
+        model.load_state_dict(torch.load(args.ckpt, map_location='cuda')['state_dict'], strict=False)
         args.ckpt = None
         if not args.no_ema:
             model.ema = ExponentialMovingAverage(

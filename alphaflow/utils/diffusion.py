@@ -80,7 +80,7 @@ _Q_inv = torch.linalg.inv(_Q)
 _sigmas = torch.from_numpy(np.load('chain_stats.npy'))
 
 
-def add_noise(dists, residue_index, mask, t, device='cpu'):
+def add_noise(dists, residue_index, mask, t, device='cuda'):
 
     sigmas, Q, D, Q_inv, bins = _sigmas.to(device), _Q.to(device), _D.to(device), _Q_inv.to(device), _bins.to(device)
     
@@ -103,7 +103,7 @@ def add_noise(dists, residue_index, mask, t, device='cpu'):
 
     return newdists.float()
 
-def sample_posterior(orig_dists, noisy_dists, residue_index, mask, s, t, device='cpu'):
+def sample_posterior(orig_dists, noisy_dists, residue_index, mask, s, t, device='cuda'):
     sigmas, Q, D, Q_inv, bins = _sigmas.to(device), _Q.to(device), _D.to(device), _Q_inv.to(device), _bins.to(device)
     mask = mask.unsqueeze(-1) * mask.unsqueeze(-2)
 
@@ -129,7 +129,7 @@ def sample_posterior(orig_dists, noisy_dists, residue_index, mask, s, t, device=
     
     return newdists.float()
 
-def sample_prior(residue_index, device='cpu'):
+def sample_prior(residue_index, device='cuda'):
 
     sigmas, Q, D, Q_inv, bins = _sigmas.to(device), _Q.to(device), _D.to(device), _Q_inv.to(device), _bins.to(device)
     B, L = residue_index.shape
